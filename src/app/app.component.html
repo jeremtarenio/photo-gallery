@@ -1,0 +1,129 @@
+<!-- gallery (slideshow) modal -->
+<div class="gallery-modal" *ngIf="galleryModalActive">
+    <!-- user controls -->
+    <span class="control progress">{{ activeImgIndex + 1 + '/' + photos.length }}</span>
+    <span class="control misc">
+        <button (click)="onEditCaption()">
+            <div>
+                <span class="iconify" data-icon="ic:round-edit" data-inline="false"></span>
+            </div>
+        </button>
+        <button (click)="onOpenDeleteModal()">
+            <div>
+                <span class="iconify" data-icon="bx:bx-trash" data-inline="false"></span>
+            </div>
+        </button>
+        <button (click)="onCloseGalleryModal()">
+            <div>
+                <span class="iconify" data-icon="ic:outline-close" data-inline="false"></span>
+            </div>
+        </button>
+    </span>
+    <button class="control gallery-nav-btn left" (click)="onClickPrev()">
+        <div>
+            <span class="iconify" data-icon="bx-bx-chevron-left" data-inline="false"></span>
+        </div>
+    </button>
+    <button class="control gallery-nav-btn right" (click)="onClickNext()">
+        <div>
+            <span class="iconify" data-icon="bx-bx-chevron-right" data-inline="false"></span>
+        </div>
+    </button>
+
+    <div class="container image-container">
+        <!-- cross fade animation using opacity -->
+        <img *ngFor="let photo of photos; let i = index" class="active-product-img" [src]="photo.url"
+            [ngClass]="activeImgIndex === i ? 'active' : ''">
+        <img *ngIf="photosFetched" [src]="photos[activeImgIndex].url" alt="">
+        <div class="gallery-caption-container">
+            <p class="the-caption">{{ photos[activeImgIndex].caption }}</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- edit caption modal  -->
+<div *ngIf="editCaptionModalActive" class="edit-caption-modal">
+    <div class="helper">
+        <button class="close-btn" (click)="onCloseEditCaptionModal()" *ngIf="!isUploading">X</button>
+        <form action="">
+            <h1 class="modal-heading">Enter a new caption: </h1>
+            <input #editCaption class="caption" type="text" [value]="photos[activeImgIndex].caption">
+            <button class="thin-btn" type="button" (click)="onSubmitEditCaption(photos[activeImgIndex].id, editCaption.value)"><h1>{{ captionUpdating ? 'Updating...' : 'Update' }}</h1></button>
+        </form>
+    </div>
+</div>
+
+<!-- delete photo modal -->
+<div *ngIf="deletePhotoModalActive" class="delete-photo-modal">
+    <div class="helper">
+        <div class="delete-modal-content">
+            <h1 class="modal-heading">Delete {{ photos[activeImgIndex].caption === "" ? 'this photo' : '"' + photos[activeImgIndex].caption + '"'}}?</h1>
+            <div class="btn-container">
+                <button class="thin-btn left" (click)="onDeletePhoto(photos[activeImgIndex].id)">{{ isDeleting ? 'Deleting...' : 'Delete' }}</button>
+                <button class="thin-btn right" (click)="onCloseDeleteModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- upload modal -->
+<div class="upload-modal" *ngIf="uploadModalActive">
+    <div class="form-container">
+        <div class="helper">
+            <button class="close-btn" (click)="onCloseUploadModal()" *ngIf="!isUploading">X</button>
+            <form #photoForm>
+                <div *ngIf="!formTempHidden" class="modal-heading-container">
+                    <h1 class="modal-heading">Upload a Photo</h1>
+                </div>
+                <!-- alerts -->
+                <div class="alert success" *ngIf="uploadSuccess">
+                    <p>Upload successful. Opening...</p>
+                </div>
+                <div class="alert danger" *ngIf="uploadFailed">
+                    <p>{{ errorMsg }}</p>
+                </div>
+                <div *ngIf="!formTempHidden">
+                    <div class="file-select-container">
+                        <input #photoInput id="file" name="file" type="file" class="inputfile"
+                        accept="image/*" (change)="onSelectFile(photoInput)" required>
+                        <span class="iconify" data-icon="ps:upload" data-inline="false" style="margin-right: 1rem;"></span><label for="file"><h1>{{ aFileIsSelected ? ((fileName.length>20)? (fileName | slice:0:20)+'..':(fileName)) : 'Choose a file...' }}</h1></label>
+                    </div>
+                    <div class="caption-container">
+                        <input required #caption class="caption" type="text" placeholder="Enter caption here...">
+                    </div>
+                    <button [disabled]="isUploading ? 'disabled' : null" class="thin-btn" type="button" (click)="onUpload(photoInput, caption.value)">
+                        <h1>{{ isUploading ? 'Uploading...' : 'Upload' }}</h1>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+ <!-- the photo grid -->
+<div class="container">
+    <div class="company-container">
+        <div>
+            <h1>Photo Gallery</h1>
+        </div>
+        <button (click)="onOpenUploadModal()">
+            <h1>Upload</h1>
+        </button>
+    </div>
+
+    <div class="loading" *ngIf="!photosFetched"><h3>Fetching photos...</h3></div>
+
+    <div *ngFor="let groupedPhoto of groupedPhotos">
+        <h1 class="date">{{ groupedPhoto.date }}</h1>
+
+        <div class="masonry">
+            <div class="brick" *ngFor="let photo of groupedPhoto.photos; let i = index">
+                <img (click)="onClickImage(photo.id)" [src]="photo.url" [alt]="photo.caption">
+            </div>
+        </div>
+    </div>
+
+
+</div>

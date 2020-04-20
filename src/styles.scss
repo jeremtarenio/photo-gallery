@@ -1,0 +1,146 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/styles/abstract/variables";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  width: 100%;
+  margin: 0;
+  background: $cream;
+  font-family: "Roboto Condensed", "Helvetica Neue", sans-serif;
+}
+
+*:focus {
+  outline: none;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  /* padding: 0 15px; */
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+button {
+  border-radius: 0;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+  z-index: 9;
+  cursor: pointer;
+}
+
+.helper {
+  background: $cream;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 450px;
+  min-height: 300px;
+  padding: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: 0;
+    border: 0;
+    color: darken($color: $cream, $amount: 50%);
+    padding: 15px;
+    font-size: 1.3rem;
+    cursor: pointer;
+  }
+}
+
+.caption {
+  width: 100%;
+  background: $cream;
+  border: 0;
+  border-bottom: 1px solid darken($cream, 50%);
+  font-size: 1rem;
+  padding: 0.5rem 0.5rem;
+}
+
+.modal-heading {
+  text-align: center;
+  color: $red;
+  font-weight: 600;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+.thin-btn {
+  padding: 0.2rem 0.9rem;
+  background: $blue;
+  border: 4px solid $blue;
+  font-family: inherit;
+  color: $cream;
+  letter-spacing: 2px;
+  cursor: pointer;
+  width: 100%;
+
+  h1 {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+}
+
+/*********
+    /* Main
+    /*********/
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
